@@ -1,0 +1,1483 @@
+<div>
+  <div *ngIf="!isViewerLoad">
+    <div class="login-box card bg-info div-mst">
+      <div class="card-body">
+        <form class="form-horizontal" #loadViewerForm="ngForm">
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="viewerServerURL"
+              placeholder="viewerServerURL"
+              ngModel
+              required
+            />
+          </div>
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="savingEndpoint"
+              placeholder="Saving End point"
+              ngModel
+              required
+            />
+          </div>
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="userName"
+              placeholder="User Name"
+              ngModel
+              required
+            />
+          </div>
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="authToken"
+              placeholder="Authorization Token"
+              ngModel
+              required
+            />
+          </div>
+          <div class="form-group">
+            <input
+              type="checkbox"
+              name="savePayloadMultipart"
+              placeholder="Authorization Token"
+              ngModel
+              required
+            />
+            <label for="savePayloadMultipart"
+              >Save Payload Type: multipart/form-data</label
+            >
+          </div>
+          <label class="btn btn-primary" (click)="loadViewer()">Submit</label>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="isViewerLoad">
+    <div>
+      <button
+        type="button"
+        class="btn btn-primary float-right btn-sm mr-2"
+        (click)="onShowHideToolbar()"
+      >
+        {{ showHideToolbar }}
+      </button>
+    </div>
+  </div>
+
+  <div>
+    <div *ngIf="isViewerLoad" class="login-box card bg-info div-mst">
+      <select
+        class="custom-select"
+        name="selectedOption"
+        (change)="chooseOption($event)"
+        ngModel
+        required
+      >
+        <option value="" selected disabled>Select Option</option>
+        <option class="text-dark" value="">Default</option>
+        <option class="text-dark" value="uploadDocument">
+          Upload Document
+        </option>
+        <option class="text-dark" value="insertDocument">
+          Insert Document
+        </option>
+        <option class="text-dark" value="appendDocument">
+          Append Document
+        </option>
+        <option class="text-dark" value="viewerPreference">
+          User Preferences
+        </option>
+        <option class="text-dark" value="saveDoc">Save</option>
+        <option class="text-dark" value="saveAllDoc">SaveAllDoc</option>
+        <option class="text-dark" value="nextPage">Next Page</option>
+        <option class="text-dark" value="prevPage">PrevPage</option>
+        <option class="text-dark" value="firstPage">FirstPage</option>
+        <option class="text-dark" value="lastPage">LastPage</option>
+        <option class="text-dark" value="getPageCount">GetPageCount</option>
+        <option class="text-dark" value="getOpenDoc">GetOpenDoc</option>
+        <option class="text-dark" value="getActiveDoc">GetActiveDoc</option>
+        <option class="text-dark" value="closeAllDoc">Close all files</option>
+        <option class="text-dark" value="closeFile">CloseFile</option>
+        <option class="text-dark" value="zoomIn">ZoomIn</option>
+        <option class="text-dark" value="zoomOut">ZoomOut</option>
+        <option class="text-dark" value="rotateClockwise">Rotate Right</option>
+        <option class="text-dark" value="fitToWidth">FitToWidth</option>
+        <option class="text-dark" value="fitToHeight">FitToHeight</option>
+        <option class="text-dark" value="fitToWindow">FitToWindow</option>
+        <option class="text-dark" value="ActualSize">ActualSize</option>
+        <option class="text-dark" value="deletePage">DeletePage</option>
+        <option class="text-dark" value="copyPage">CopyPage</option>
+        <option class="text-dark" value="cutPage">CutPage</option>
+        <option class="text-dark" value="pastePage">PastePage</option>
+        <option class="text-dark" value="hideAnnotation">HideAnnotation</option>
+        <option class="text-dark" value="hideThumbnails">Hide Thumbnail</option>
+        <option class="text-dark" value="selectPanning">SelectPanning</option>
+        <option class="text-dark" value="newDoc">New Document</option>
+        <option class="text-dark" value="gotoPage">Go to Page</option>
+        <option class="text-dark" value="searchText">Search Text</option>
+        <option class="text-dark" value="export">Export</option>
+        <option class="text-dark" value="printDocument">Print</option>
+        <option class="text-dark" value="drawMultiAnnotation">
+          Draw shapes
+        </option>
+        <option class="text-dark" value="editAnnotation">
+          Edit Annotation
+        </option>
+        <option class="text-dark" value="deleteAnnotation">
+          Delete Annotation
+        </option>
+        <option class="text-dark" value="getReplyFromUser">
+          Get User Reply
+        </option>
+        <option class="text-dark" value="getAllReplies">Get All Replies</option>
+        <option class="text-dark" value="updateComment">
+          Update Comment or Reply
+        </option>
+        <option class="text-dark" value="removeReply">Remove Reply</option>
+        <option class="text-dark" value="removeAllReply">
+          Remove All Reply
+        </option>
+        <option class="text-dark" value="getAllAnn">Get All Annotations</option>
+        <option class="text-dark" value="getAnnDetails">
+          Get Annotation Details
+        </option>
+        <option class="text-dark" value="getFilteredAnn">
+          Get Filtered Annotations
+        </option>
+      </select>
+    </div>
+
+    <div *ngIf="isMultiAnnotation" class="login-box card bg-info div-mst">
+      <select
+        class="custom-select"
+        name="selectedOption"
+        (change)="selectMultiPageAnnotation($event)"
+        ngModel
+        required
+      >
+        <option value="" selected disabled>Select Annotation</option>
+        <option class="text-dark" value="line">LINE</option>
+        <option class="text-dark" value="arrow">ARROW</option>
+        <option class="text-dark" value="circle">CIRCLE</option>
+        <option class="text-dark" value="rectangle">RECTANGLE</option>
+        <option class="text-dark" value="highlight">HIGHLIGHT</option>
+        <option class="text-dark" value="text">TEXT</option>
+        <option class="text-dark" value="stickynote">STICKYNOTE</option>
+        <option class="text-dark" value="checkpoint">CHECKPOINT</option>
+        <option class="text-dark" value="stamp">STAMP</option>
+        <option class="text-dark" value="imageStamp">IMAGE STAMP</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="selectedOption == 'scanDocument'">
+  <div class="login-box card bg-info div-mst">
+    <div class="card-body">
+      <form class="form-horizontal" #scanDocumentForm="ngForm">
+        <button type="submit" class="btn btn-primary" (click)="scanDocument()">
+          scan Document
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="selectedOption == 'uploadDocument'">
+  <div class="login-box card bg-info div-mst">
+    <div class="card-body">
+      <form class="form-horizontal" #uploadForm="ngForm">
+        <div class="form-group">
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="docURLs"
+              placeholder="Document Url's"
+              ngModel
+              required
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="annURLs"
+              placeholder="Annotation Url's"
+              ngModel
+              required
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="userName"
+              placeholder="Username"
+              ngModel
+              required
+            />
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+          (click)="submitUploadDetail()"
+        >
+          upload</button
+        >&nbsp;
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="selectedMultiAnnotation != null">
+  <div class="login-box card bg-info div-mst">
+    <div class="card-body">
+      <form class="form-horizontal" #multiAnnotationForm="ngForm">
+        <div class="form-group">
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="pageNo"
+              placeholder="Page Range..."
+              ngModel
+              required
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="annCanvasStartX"
+              placeholder="AnnCanvasStartX"
+              ngModel
+              required
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="annCanvasEndX"
+              placeholder="AnnCanvasEndX"
+              ngModel
+              required
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="annCanvasStartY"
+              placeholder="AnnCanvasStartY"
+              ngModel
+              required
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="annCanvasEndY"
+              placeholder="AnnCanvasEndY"
+              ngModel
+              required
+            />
+          </div>
+          <div
+            *ngIf="
+              selectedMultiAnnotation == 'line' ||
+              selectedMultiAnnotation == 'arrow'
+            "
+          >
+            <input
+              type="text"
+              class="form-control form-control-sm col-sm-3"
+              name="borderWidth"
+              placeholder="borderWidth"
+              ngModel
+              required
+            />
+            <input
+              type="text"
+              class="form-control form-control-sm col-sm-3"
+              name="borderColor"
+              placeholder="borderColor"
+              ngModel
+              required
+            />
+            <input
+              type="text"
+              class="form-control form-control-sm col-sm-3"
+              name="opacity"
+              placeholder="opacity"
+              ngModel
+              required
+            />
+          </div>
+          <div
+            *ngIf="
+              selectedMultiAnnotation == 'circle' ||
+              selectedMultiAnnotation == 'rectangle'
+            "
+          >
+            <input
+              type="text"
+              class="form-control form-control-sm col-sm-3"
+              name="borderWidth"
+              placeholder="borderWidth"
+              ngModel
+              required
+            />
+            <input
+              type="text"
+              class="form-control form-control-sm col-sm-3"
+              name="borderColor"
+              placeholder="borderColor"
+              ngModel
+              required
+            />
+            <input
+              type="text"
+              class="form-control form-control-sm col-sm-3"
+              name="opacity"
+              placeholder="opacity"
+              ngModel
+              required
+            />
+            <input
+              type="text"
+              class="form-control form-control-sm col-sm-3"
+              name="fillColor"
+              placeholder="fillcolor"
+              ngModel
+              required
+            />
+          </div>
+          <div *ngIf="selectedMultiAnnotation == 'highlight'">
+            <input
+              type="text"
+              class="form-control form-control-sm col-sm-3"
+              name="opacity"
+              placeholder="opacity"
+              ngModel
+              required
+            />
+            <input
+              type="text"
+              class="form-control form-control-sm col-sm-3"
+              name="fillColor"
+              placeholder="fillcolor"
+              ngModel
+              required
+            />
+          </div>
+          <div *ngIf="selectedMultiAnnotation == 'text'">
+            <input
+              type="text"
+              class="form-control form-control-sm col-sm-3"
+              name="borderWidth"
+              placeholder="borderWidth"
+              ngModel
+              required
+            />
+            <input
+              type="text"
+              class="form-control form-control-sm col-sm-3"
+              name="borderColor"
+              placeholder="borderColor"
+              ngModel
+              required
+            />
+            <input
+              type="text"
+              class="form-control form-control-sm col-sm-3"
+              name="opacity"
+              placeholder="opacity"
+              ngModel
+              required
+            />
+            <input
+              type="text"
+              class="form-control form-control-sm col-sm-3"
+              name="fillColor"
+              placeholder="fillcolor"
+              ngModel
+              required
+            />
+            <input
+              type="text"
+              class="form-control form-control-sm col-sm-3"
+              name="fontFace"
+              placeholder="fontface"
+              ngModel
+              required
+            />
+            <input
+              type="text"
+              class="form-control form-control-sm col-sm-3"
+              name="fontSize"
+              placeholder="fontsize"
+              ngModel
+              required
+            />
+            <input
+              type="text"
+              class="form-control form-control-sm col-sm-3"
+              name="fontColor"
+              placeholder="fontcolor"
+              ngModel
+              required
+            />
+          </div>
+          <div *ngIf="selectedMultiAnnotation == 'checkpoint'">
+            <input
+              type="text"
+              class="form-control form-control-sm col-sm-3"
+              name="fillColor"
+              placeholder="fillcolor"
+              ngModel
+              required
+            />
+          </div>
+          <div *ngIf="selectedMultiAnnotation == 'stamp'">
+            <input
+              type="text"
+              class="form-control form-control-sm col-sm-3"
+              name="borderWidth"
+              placeholder="borderWidth"
+              ngModel
+              required
+            />
+            <input
+              type="text"
+              class="form-control form-control-sm col-sm-3"
+              name="borderColor"
+              placeholder="borderColor"
+              ngModel
+              required
+            />
+            <input
+              type="text"
+              class="form-control form-control-sm col-sm-3"
+              name="fillColor"
+              placeholder="fillcolor"
+              ngModel
+              required
+            />
+            <input
+              type="text"
+              class="form-control form-control-sm col-sm-3"
+              name="fontFace"
+              placeholder="fontface"
+              ngModel
+              required
+            />
+            <input
+              type="text"
+              class="form-control form-control-sm col-sm-3"
+              name="fontSize"
+              placeholder="fontsize"
+              ngModel
+              required
+            />
+            <input
+              type="text"
+              class="form-control form-control-sm col-sm-3"
+              name="fontColor"
+              placeholder="fontcolor"
+              ngModel
+              required
+            />
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+          (click)="drawMultiPageAnnotation()"
+        >
+          Draw {{ selectedMultiAnnotation }}</button
+        >&nbsp;
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="selectedOption == 'viewerPreference'">
+  <div class="login-box card bg-info div-mst">
+    <div class="card-body">
+      <form class="form-horizontal" #userPrefForm="ngForm">
+        <div class="form-group">
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="fileURL"
+              placeholder="Json File Path"
+              ngModel
+              required
+            />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-danger">Submit</button>&nbsp;
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="isDeleteAnn">
+  <div class="login-box card bg-info div-mst">
+    <div class="card-body">
+      <form class="form-horizontal" #deleteAnnForm="ngForm">
+        <div class="form-group">
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="annId"
+              placeholder="Enter Annotation Id"
+              ngModel
+              required
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="pageNO"
+              placeholder="Enter Page No"
+              ngModel
+              required
+            />
+          </div>
+        </div>
+        <button
+          type="submit"
+          class="btn btn-danger"
+          (click)="submitDeleteAnnDetails()"
+        >
+          Delete</button
+        >&nbsp;
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="getAllRepliesFromAnn">
+  <div class="login-box card bg-info div-mst">
+    <div class="card-body">
+      <form class="form-horizontal" #getAllReplies="ngForm">
+        <div class="form-group">
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="annId"
+              placeholder="Enter Annotation Id"
+              ngModel
+              required
+            />
+          </div>
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          (click)="getAllRepliesFromAnndata()"
+        >
+          Get All Replies</button
+        >&nbsp;
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="isImageStamp">
+  <div class="login-box card bg-info div-mst">
+    <select
+      class="custom-select"
+      name="selectedStamp"
+      (change)="chooseStamps($event)"
+      ngModel
+      required
+    >
+      <option value="" selected disabled>Select Stamp</option>
+      <option
+        *ngFor="let stamps of stampArray[0][0]"
+        [value]="stamps.stampName"
+      >
+        {{ stamps.stampName }}
+      </option>
+    </select>
+  </div>
+</div>
+
+<div *ngIf="isEditAnn">
+  <div class="login-box card bg-info div-mst">
+    <div class="card-body">
+      <form class="form-horizontal" #editAnnForm="ngForm">
+        <div class="form-group">
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="annId"
+              placeholder="Enter Annotation Id"
+              ngModel
+              required
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="pageNO"
+              placeholder="Enter Page No"
+              ngModel
+              required
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="annCanvasStartX"
+              placeholder="AnnCanvasStartX"
+              ngModel
+              required
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="annCanvasEndX"
+              placeholder="AnnCanvasEndX"
+              ngModel
+              required
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="annCanvasStartY"
+              placeholder="AnnCanvasStartY"
+              ngModel
+              required
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="annCanvasEndY"
+              placeholder="AnnCanvasEndY"
+              ngModel
+              required
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm col-sm-3"
+              name="borderWidth"
+              placeholder="borderWidth"
+              ngModel
+              required
+            />
+            <input
+              type="text"
+              class="form-control form-control-sm col-sm-3"
+              name="borderColor"
+              placeholder="borderColor"
+              ngModel
+              required
+            />
+            <input
+              type="text"
+              class="form-control form-control-sm col-sm-3"
+              name="fillColor"
+              placeholder="fillcolor"
+              ngModel
+              required
+            />
+            <input
+              type="text"
+              class="form-control form-control-sm col-sm-3"
+              name="opacity"
+              placeholder="opacity"
+              ngModel
+              required
+            />
+            <input
+              type="text"
+              class="form-control form-control-sm col-sm-3"
+              name="fontFace"
+              placeholder="fontface"
+              ngModel
+              required
+            />
+            <input
+              type="text"
+              class="form-control form-control-sm col-sm-3"
+              name="fontSize"
+              placeholder="fontsize"
+              ngModel
+              required
+            />
+            <input
+              type="text"
+              class="form-control form-control-sm col-sm-3"
+              name="fontColor"
+              placeholder="fontcolor"
+              ngModel
+              required
+            />
+          </div>
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          (click)="submitEditDetails()"
+        >
+          Edit Annotation</button
+        >&nbsp;
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="isTextInputForMultiPage">
+  <div class="login-box card bg-info div-mst">
+    <div class="card-body">
+      <form class="form-horizontal" #multiStampTextForm="ngForm">
+        <div class="form-group">
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="inputText"
+              placeholder="Input Text"
+              ngModel
+              required
+            />
+          </div>
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          (click)="submitStampTextForMultiPage()"
+        >
+          OK</button
+        >&nbsp;
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="isCommentToUpdate">
+  <div class="login-box card bg-info div-mst">
+    <select
+      class="custom-select"
+      name="selectedOption"
+      (change)="OnUpdateCommentChange($event)"
+      ngModel
+      required
+    >
+      <option value="" selected disabled>Select To Update</option>
+      <option class="text-dark" value="comment">Add / update Comment</option>
+      <option class="text-dark" value="addReply">Add Reply</option>
+      <option class="text-dark" value="reply">Update Reply</option>
+    </select>
+  </div>
+</div>
+
+<div *ngIf="updateAnnComment">
+  <div class="login-box card bg-info div-mst">
+    <div class="card-body">
+      <form class="form-horizontal" #commentUpdateForm="ngForm">
+        <div class="form-group">
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="annId"
+              placeholder="Enter Annotation Id"
+              ngModel
+              required
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="inputText"
+              placeholder="Update Comment"
+              ngModel
+              required
+            />
+          </div>
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          (click)="submitCRUpdateDetails()"
+        >
+          OK</button
+        >&nbsp;
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="updateAnnReply">
+  <div class="login-box card bg-info div-mst">
+    <div class="card-body">
+      <form class="form-horizontal" #replyUpdateForm="ngForm">
+        <div class="form-group">
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="annId"
+              placeholder="Enter Annotation Id"
+              ngModel
+              required
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="inputText"
+              placeholder="update reply"
+              ngModel
+              required
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="replyId"
+              placeholder="reply Id"
+              ngModel
+              required
+            />
+          </div>
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          (click)="submitCRUpdateDetails()"
+        >
+          OK</button
+        >&nbsp;
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="addAnnReply">
+  <div class="login-box card bg-info div-mst">
+    <div class="card-body">
+      <form class="form-horizontal" #replyAddForm="ngForm">
+        <div class="form-group">
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="annId"
+              placeholder="Enter Annotation Id"
+              ngModel
+              required
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="inputText"
+              placeholder="Add reply"
+              ngModel
+              required
+            />
+          </div>
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          (click)="submitCRUpdateDetails()"
+        >
+          OK</button
+        >&nbsp;
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="removeReplyId">
+  <div class="login-box card bg-info div-mst">
+    <div class="card-body">
+      <form class="form-horizontal" #removeReplyForm="ngForm">
+        <div class="form-group">
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="replyId"
+              placeholder="reply Id"
+              ngModel
+              required
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="annId"
+              placeholder="Annotation Id"
+              ngModel
+              required
+            />
+          </div>
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          (click)="removeReplyByRId()"
+        >
+          Remove Reply</button
+        >&nbsp;
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="removeAllReplyByAnnId">
+  <div class="login-box card bg-info div-mst">
+    <div class="card-body">
+      <form class="form-horizontal" #removeAllReplyForm="ngForm">
+        <div class="form-group">
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="annId"
+              placeholder="Annotation Id"
+              ngModel
+              required
+            />
+          </div>
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          (click)="removeAllReplyByAId()"
+        >
+          Remove All Reply</button
+        >&nbsp;
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="getReplyByUser">
+  <div class="login-box card bg-info div-mst">
+    <div class="card-body">
+      <form class="form-horizontal" #getReplyByUserForm="ngForm">
+        <div class="form-group">
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="annId"
+              placeholder="Annotation Id"
+              ngModel
+              required
+            />
+          </div>
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          (click)="getReplyByUsername()"
+        >
+          Get Reply By User</button
+        >&nbsp;
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="isGetAllAnn">
+  <div class="login-box card bg-info div-mst">
+    <div class="card-body">
+      <form class="form-horizontal" #getAllAnnForm="ngForm">
+        <div class="form-group">
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="userName"
+              placeholder="username"
+              ngModel
+              required
+            />
+          </div>
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          (click)="getAllAnnotation()"
+        >
+          Get All Annotation</button
+        >&nbsp;
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="isGetAnnDetails">
+  <div class="login-box card bg-info div-mst">
+    <div class="card-body">
+      <form class="form-horizontal" #getAnnDetailForm="ngForm">
+        <div class="form-group">
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="annId"
+              placeholder="Annotation Id"
+              ngModel
+              required
+            />
+          </div>
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          (click)="getAnnotationDetails()"
+        >
+          Get Annotation Details</button
+        >&nbsp;
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="isGetFilteredAnn">
+  <div class="login-box card bg-info div-mst">
+    <div class="card-body">
+      <form class="form-horizontal" #getFilteredAnnForm="ngForm">
+        <div class="form-group">
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="userName"
+              placeholder="username"
+              ngModel
+              required
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="annType"
+              placeholder="Annotation Type"
+              ngModel
+              required
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="pageNo"
+              placeholder="page No"
+              ngModel
+              required
+            />
+          </div>
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          (click)="getFilteredAnnotation()"
+        >
+          Get Filtered Annotation</button
+        >&nbsp;
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="selectedOption == 'textSearch'">
+  <div class="login-box card bg-info div-mst">
+    <div class="card-body">
+      <form class="form-horizontal" #textSearchForm="ngForm">
+        <div class="form-group">
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="inputText"
+              placeholder="Input Text"
+              ngModel
+              required
+            />
+          </div>
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          (click)="submitTextDetail()"
+        >
+          Search</button
+        >&nbsp;
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="selectedOption == 'exportDocument'">
+  <div class="login-box card bg-info div-mst">
+    <div class="card-body">
+      <form class="form-horizontal" #exportForm="ngForm">
+        <div class="form-group">
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="doctype"
+              placeholder="pdf or tiff"
+              ngModel
+              required
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="pagOption"
+              placeholder="currentPage or allDocuments"
+              ngModel
+              required
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="DocName"
+              placeholder="Document Name"
+              ngModel
+              required
+            />
+          </div>
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          (click)="submitExportDetail()"
+        >
+          Export</button
+        >&nbsp;
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="selectedOption == 'gotoPage'">
+  <div class="login-box card bg-info div-mst">
+    <div class="card-body">
+      <form class="form-horizontal" #gotoPageForm="ngForm">
+        <div class="form-group">
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="pageNO"
+              placeholder="Enter Page No"
+              ngModel
+              required
+            />
+          </div>
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          (click)="submitGotoPageDetail()"
+        >
+          Go</button
+        >&nbsp;
+      </form>
+    </div>
+  </div>
+</div>
+
+<div
+  *ngIf="
+    selectedOption == 'insertDocument' || selectedOption == 'appendDocument'
+  "
+>
+  <div class="login-box card bg-info div-mst">
+    <div class="card-body">
+      <form class="form-horizontal" #insertForm="ngForm">
+        <div class="form-group">
+          <input
+            type="file"
+            class="form-control form-control-sm wrapword"
+            id="fil-id"
+            name="fileURL"
+            (change)="actualFilePath($event)"
+            ngModel
+            required
+          />
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          (click)="submitInsertDetail()"
+        >
+          Submit</button
+        >&nbsp;
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="selectedOption == 'saveDocument'">
+  <div class="login-box card bg-info div-mst">
+    <div class="card-body">
+      <form class="form-horizontal" #saveForm="ngForm">
+        <div class="form-group">
+          <label class="control-label required">Save Document</label>
+          <select
+            class="form-control custom-select"
+            name="docName"
+            ngModel
+            required
+          >
+            <option *ngFor="let file of fileName" [ngValue]="file.docId">
+              {{ file.docName }}
+            </option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary" (click)="saveDoc()">
+          Save Document
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="selectedOption == 'splitDocument'">
+  <div class="login-box card bg-info div-mst">
+    <div class="card-body">
+      <form class="form-horizontal" #splitForm="ngForm">
+        <div class="form-group">
+          <select
+            id="splitSelect"
+            class="form-control custom-select"
+            name="docName"
+            ngModel
+            required
+          >
+            <option id="splitBase" value="" selected>
+              Select Document To Split
+            </option>
+            <option *ngFor="let file of fileName" [ngValue]="file.docId">
+              {{ file.docName }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control form-control-sm"
+            name="pagerange"
+            placeholder="Enter page range"
+            ngModel
+            required
+          />
+        </div>
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control form-control-sm"
+            name="splitDocName"
+            placeholder="Enter Split Groups Name"
+            ngModel
+            required
+          />
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="!splitForm.valid"
+        >
+          Split Document
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="selectedOption == 'allDocument'">
+  <div class="login-box card bg-info div-mst">
+    <div class="card-body">
+      <form class="form-horizontal" #allDocumentForm="ngForm">
+        <button type="submit" class="btn btn-primary" (click)="allDoc()">
+          All Groups Id
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="selectedOption == 'selectedDocument'">
+  <div class="login-box card bg-info div-mst">
+    <div class="card-body">
+      <form class="form-horizontal" #allDocumentForm="ngForm">
+        <button type="submit" class="btn btn-primary" (click)="currentDoc()">
+          Current Document
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="selectedOption == 'totalPagesOfGroup'">
+  <div class="login-box card bg-info div-mst">
+    <div class="card-body">
+      <form class="form-horizontal" #totalPageForm="ngForm">
+        <div class="form-group">
+          <label class="control-label required">Total page</label>
+          <select
+            class="form-control custom-select"
+            name="docName"
+            ngModel
+            required
+          >
+            <option *ngFor="let file of fileName" [ngValue]="file.docId">
+              {{ file.docName }}
+            </option>
+          </select>
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="!totalPageForm.valid"
+          (click)="totalPagesOfGroup()"
+        >
+          total Pages
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="selectedOption == 'postRequest'">
+  <div class="login-box card bg-info div-mst">
+    <div class="card-body">
+      <form class="form-horizontal" #saveGroupsForm="ngForm">
+        <button type="submit" class="btn btn-primary" (click)="postRequest()">
+          Save Groups
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="selectedOption == 'deleteGroup'">
+  <div class="login-box card bg-info div-mst">
+    <div class="card-body">
+      <form class="form-horizontal" #deleteGroupForm="ngForm">
+        <div class="form-group">
+          <label class="control-label required">Delete Group</label>
+          <select
+            class="form-control custom-select"
+            name="docName"
+            ngModel
+            required
+          >
+            <option *ngFor="let file of fileName" [ngValue]="file.docId">
+              {{ file.docName }}
+            </option>
+          </select>
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="!deleteGroupForm.valid"
+          (click)="deleteGroup()"
+        >
+          Delete Group
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="selectedOption == 'deleteAllGroup'">
+  <div class="login-box card bg-info div-mst">
+    <div class="card-body">
+      <form class="form-horizontal" #deleteAllGroupForm="ngForm">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          (click)="deleteAllGroup()"
+        >
+          Delete All Group
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="selectedOption == 'printDocument'">
+  <div class="login-box card bg-info div-mst">
+    <div class="card-body">
+      <form class="form-horizontal" #printDocumentForm="ngForm">
+        <div class="form-group">
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="pageOptions"
+              placeholder="currentPage or allPages or allDocuments"
+              ngModel
+              required
+            />
+          </div>
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          (click)="submitPrintDocumentDetail()"
+        >
+          Print</button
+        >&nbsp;
+      </form>
+    </div>
+  </div>
+</div>
+
+<hr />
+
+<div id="uploadIframe"></div>
