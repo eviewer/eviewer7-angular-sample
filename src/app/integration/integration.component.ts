@@ -176,7 +176,7 @@ export class IntegrationComponent implements OnInit {
 
   imageStamp(): void {
     const iThis = this;
-    this.annotationService.getStamps();
+    this.annotationService.getStamps(undefined);
     setTimeout(() => {
       iThis.stampArray = [];
       iThis.stampArray.push(this.stService.stampDetailsArray);
@@ -251,7 +251,7 @@ export class IntegrationComponent implements OnInit {
       options.borderWidth === 0 &&
       options.borderColor === '' &&
       options.fillColor === '' &&
-      options.opacity === 0 &&
+      (isNaN(options.opacity) || this.editAnnForm.value.opacity === '') && // nilesh for Generic_eVewer7_2181: APINPM:S2,P2
       options.fontFace === '' &&
       options.fontSize === 0 &&
       options.FontColor === ''
@@ -450,7 +450,7 @@ export class IntegrationComponent implements OnInit {
         break;
       case 'viewerPreference':
         this.selectedOption = 'viewerPreference';
-        this.viewer_preference.setUserPreferences('');
+        // this.viewer_preference.setUserPreferences('');
         break;
 
       case 'nextPage':
@@ -674,13 +674,15 @@ export class IntegrationComponent implements OnInit {
       FontColor: this.multiAnnotationForm.value.fontColor,
       // image: "BASE64STRING or relative path to image"
     };
+    
+    if (this.multiAnnotationForm.value.opacity === '') {
+      options.opacity = undefined;
+    }
     if (
       (options.borderWidth === 0 || options.borderWidth === undefined) &&
       (options.borderColor === '' || options.borderColor === undefined) &&
       (options.fillColor === '' || options.fillColor === undefined) &&
-      (options.opacity === 0 ||
-        options.opacity === undefined ||
-        isNaN(options.opacity)) &&
+      (options.opacity === undefined || isNaN(options.opacity)) &&
       (options.fontFace === '' || options.fontFace === undefined) &&
       (options.fontSize === 0 ||
         options.fontSize === undefined ||
@@ -813,6 +815,7 @@ export class IntegrationComponent implements OnInit {
       withAnn: 'false',
       startPageExport: 0,
       endPageExport: 0,
+      withwatermark: true,
     };
     this.exportForm.reset();
     this.selectedOption = '';
@@ -825,6 +828,7 @@ export class IntegrationComponent implements OnInit {
       withannotation: 'false',
       startPage: 0,
       endPage: 0,
+      withwatermark: true,
     };
     this.editingService.printDocument(printData);
     this.printDocumentForm.reset();
