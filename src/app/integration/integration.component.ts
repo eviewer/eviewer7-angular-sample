@@ -125,6 +125,7 @@ export class IntegrationComponent implements OnInit {
       viewerServerURL,
       savingEndPoint,
       userName,
+      '',
       options,
       hideToolBar
     );
