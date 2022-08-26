@@ -266,6 +266,10 @@ export class IntegrationComponent implements OnInit {
       FontColor: this.editAnnForm.value.fontColor,
       // image: "BASE64STRING or relative path to image"
     };
+    
+    if(this.editAnnForm.value.opacity === ""){
+      options.opacity = undefined;
+    }
     if (
       options.borderWidth === 0 &&
       options.borderColor === '' &&
@@ -276,9 +280,6 @@ export class IntegrationComponent implements OnInit {
       options.FontColor === ''
     ) {
       options = undefined;
-    }
-    if(this.editAnnForm.value.opacity === ""){
-      options.opacity = undefined;
     }
     const annId: string = this.editAnnForm.value.annId;
     const pageNO: number = +this.editAnnForm.value.pageNO;

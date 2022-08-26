@@ -43,9 +43,7 @@ export class IntegrationService {
     deleteModifyGroup = new Subject<any>();
     blankViewer = new Subject<any>();
     appPath: string;
-    isViwerLoaded: Subject<boolean> = new Subject<boolean>();
-
-    
+    isViewerLoaded: Subject<boolean> = new Subject<boolean>();
 
     constructor() {
         if (window.addEventListener) {
@@ -169,7 +167,7 @@ export class IntegrationService {
         iframeId: string, iframeHeight: number, docLoadUrl: string, userName: string) {
         // , viewerDiv: any
         
-        this.isViwerLoaded.next(true);
+        this.isViewerLoaded.next(true);
         let loadViewerPromise: any;
         // loadViewerPromise = new Promise((resolve, reject) => {
         //     let integrationService = this;
